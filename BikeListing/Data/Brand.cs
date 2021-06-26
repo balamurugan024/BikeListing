@@ -12,5 +12,8 @@ namespace BikeListing.Data
         public string Name { get; set; }
 
         public string SCode { get; set; }
+
+        public virtual IList<Bike> Bikes { get; set; }
+
     }
 }

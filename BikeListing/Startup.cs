@@ -13,8 +13,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using AutoMapper;
 using Swashbuckle.AspNetCore;
 using Swashbuckle.AspNetCore.SwaggerUI;
+using BikeListing.Configuration;
 
 namespace BikeListing
 {
@@ -41,6 +43,8 @@ namespace BikeListing
                  );
             
             });
+
+            services.AddAutoMapper(typeof(MapperInitializer));
 
             services.AddSwaggerGen(
                 c=>
