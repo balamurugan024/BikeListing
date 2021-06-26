@@ -2,10 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BikeListing.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -28,13 +30,26 @@ namespace BikeListing
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddDbContext<DatabaseContext>( options =>
+                options.UseSqlServer(Configuration.GetConnectionString("sqlconnection"))
+                
+                );
+
+            services.AddCors(o => {
+                o.AddPolicy("AllAccess", builder => 
+                    builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()
+                 );
+            
+            });
+
             services.AddSwaggerGen(
                 c=>
                 {
                     c.SwaggerDoc("v1", new OpenApiInfo { Title = "BikeListing", Version = "c1" });
                 }
                 );
+
+            services.AddControllers();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -50,6 +65,8 @@ namespace BikeListing
             app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json","BikeListing v1") );
 
             app.UseHttpsRedirection();
+
+            app.UseCors("All Access");
 
             app.UseRouting();
 
