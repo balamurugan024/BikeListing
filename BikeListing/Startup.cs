@@ -17,6 +17,8 @@ using AutoMapper;
 using Swashbuckle.AspNetCore;
 using Swashbuckle.AspNetCore.SwaggerUI;
 using BikeListing.Configuration;
+using BikeListing.IRepository;
+using BikeListing.Repository;
 
 namespace BikeListing
 {
@@ -44,14 +46,21 @@ namespace BikeListing
             
             });
 
+
             services.AddAutoMapper(typeof(MapperInitializer));
+
+            services.AddTransient<IUnitOfWork, UnitOfWork>();
 
             services.AddSwaggerGen(
                 c=>
                 {
-                    c.SwaggerDoc("v1", new OpenApiInfo { Title = "BikeListing", Version = "c1" });
+                    c.SwaggerDoc("v1", new OpenApiInfo { Title = "BikeListing", Version = "v1" });
                 }
                 );
+
+            services.AddControllers().AddNewtonsoftJson(op =>
+            op.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+            );
 
             services.AddControllers();
         }
@@ -70,7 +79,7 @@ namespace BikeListing
 
             app.UseHttpsRedirection();
 
-            app.UseCors("All Access");
+            app.UseCors("AllAccess");
 
             app.UseRouting();
 

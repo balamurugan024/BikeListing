@@ -13,7 +13,7 @@ namespace BikeListing.Configuration
         public MapperInitializer()
         {
             CreateMap<Brand, BrandDTO>().ReverseMap();
-            CreateMap<Brand, BrandDTO>().ReverseMap();
+            CreateMap<Brand, CreateBrandDTO>().ReverseMap();
             CreateMap<Bike, BikeDTO>().ReverseMap();
             CreateMap<Bike, CreateBikeDTO>().ReverseMap();
         }
