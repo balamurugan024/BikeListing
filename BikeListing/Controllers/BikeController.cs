@@ -29,26 +29,6 @@ namespace BikeListing.Controllers
         }
 
 
-        //[HttpGet]
-        //[ProducesResponseType(StatusCodes.Status200OK)]
-        //[ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        //public async Task<IActionResult> GetBikes()
-        //{
-        //    try
-        //    {
-        //        var bikes = await _unitOfWork.Bikes.GetAll();
-        //        var results = _mapper.Map<IList<BikeDTO>>(bikes);
-        //        return Ok(results);
-
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        _logger.LogError(ex, $"Somthing went wrong in the {nameof(GetBikes)}");
-        //        return StatusCode(500, "Internal Server Error, Please try again later");
-        //    }
-        //}
-
-
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
