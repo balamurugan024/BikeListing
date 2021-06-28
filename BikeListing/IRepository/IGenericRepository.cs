@@ -1,8 +1,10 @@
-﻿using System;
+﻿using BikeListing.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using X.PagedList;
 
 namespace BikeListing.IRepository
 {
@@ -12,6 +14,11 @@ namespace BikeListing.IRepository
             Expression<Func<T,bool>> expression=null,
             Func<IQueryable<T>,
             IOrderedQueryable<T>> orderby= null,
+            List<string> includes = null
+            );
+
+        Task<IPagedList<T>> GetByPage(
+            RequestParams requestParams = null,     
             List<string> includes = null
             );
 

@@ -81,17 +81,16 @@ namespace BikeListing
             }
 
             app.UseSwagger();
-
             app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json","BikeListing v1") );
 
-            app.UseHttpsRedirection();
+            app.ConfigureExceptionHandler();
 
+            app.UseHttpsRedirection();
             app.UseCors("AllAccess");
 
             app.UseRouting();
 
             app.UseAuthentication();
-
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

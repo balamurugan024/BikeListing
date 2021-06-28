@@ -29,43 +29,49 @@ namespace BikeListing.Controllers
         }
 
 
+        //[HttpGet]
+        //[ProducesResponseType(StatusCodes.Status200OK)]
+        //[ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        //public async Task<IActionResult> GetBikes()
+        //{
+        //    try
+        //    {
+        //        var bikes = await _unitOfWork.Bikes.GetAll();
+        //        var results = _mapper.Map<IList<BikeDTO>>(bikes);
+        //        return Ok(results);
+
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        _logger.LogError(ex, $"Somthing went wrong in the {nameof(GetBikes)}");
+        //        return StatusCode(500, "Internal Server Error, Please try again later");
+        //    }
+        //}
+
+
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> GetBikes()
+        public async Task<IActionResult> GetBikes([FromQuery] RequestParams requestParams)
         {
-            try
-            {
-                var bikes = await _unitOfWork.Bikes.GetAll();
+
+                var bikes = await _unitOfWork.Bikes.GetByPage(requestParams);
                 var results = _mapper.Map<IList<BikeDTO>>(bikes);
                 return Ok(results);
 
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, $"Somthing went wrong in the {nameof(GetBikes)}");
-                return StatusCode(500, "Internal Server Error, Please try again later");
-            }
         }
 
-        
+
         [HttpGet("{id:int}", Name = "GetBike")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetBike(int id)
         {
-            try
-            {
+            
                 var bike = await _unitOfWork.Bikes.Get(q=>q.Id==id, new List<string>{"Brand"});
                 var results = _mapper.Map<BikeDTO>(bike);
                 return Ok(results);
-
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, $"Somthing went wrong in the {nameof(GetBike)}");
-                return StatusCode(500, "Internal Server Error, Please try again later");
-            }
+           
         }
 
 
@@ -82,19 +88,11 @@ namespace BikeListing.Controllers
                 return BadRequest(ModelState);
             }
 
-            try
-            {
                 var bike = _mapper.Map<Bike>(bikeDTO);
                 await _unitOfWork.Bikes.Insert(bike);
                 await _unitOfWork.Save();
 
                 return CreatedAtRoute("GetBike", new { id = bike.Id }, bike);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, $"Somthing went wrong in the {nameof(CreateBike)}");
-                return StatusCode(500, "Internal Server Error, Please try again later");
-            }
 
         }
 
@@ -112,8 +110,7 @@ namespace BikeListing.Controllers
                 return BadRequest(ModelState);
             }
 
-            try
-            {
+          
                 var bike = await _unitOfWork.Bikes.Get(q => q.Id == id);
                 if(bike ==  null)    
                 {
@@ -126,12 +123,7 @@ namespace BikeListing.Controllers
                 await _unitOfWork.Save();
 
                 return NoContent();
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, $"Somthing went wrong in the {nameof(CreateBike)}");
-                return StatusCode(500, "Internal Server Error, Please try again later");
-            }
+           
 
         }
 
@@ -148,8 +140,7 @@ namespace BikeListing.Controllers
                 return BadRequest();
             }
 
-            try
-            {
+         
                 var bike = await _unitOfWork.Bikes.Get(q => q.Id == id);
                 if (bike == null)
                 {
@@ -162,12 +153,7 @@ namespace BikeListing.Controllers
                 await _unitOfWork.Save();
 
                 return NoContent();
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, $"Somthing went wrong in the {nameof(DeleteBike)}");
-                return StatusCode(500, "Internal Server Error, Please try again later");
-            }
+            
 
         }
 

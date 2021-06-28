@@ -17,9 +17,9 @@ namespace BikeListing
         {
             Log.Logger = new LoggerConfiguration()
                 .WriteTo.File(
-                path: @"C:\01.Preparation\Log-.txt",
+                path: @"C:\01.Logs\Log-.txt",
                 rollingInterval: RollingInterval.Day,
-                outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff.zzz}[{Level:u3}]{Message:lj{NewLine}{Exceptiom}}",
+                outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] {UserId} {Event} - {Message}{NewLine}{Exception}",
                 restrictedToMinimumLevel: LogEventLevel.Information
                 ).CreateLogger();
 

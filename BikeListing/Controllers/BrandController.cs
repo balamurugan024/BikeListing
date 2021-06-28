@@ -34,18 +34,12 @@ namespace BikeListing.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetBrands()
         {
-            try
-            {
+            
                 var brands = await _unitOfWork.Brands.GetAll();
                 var results = _mapper.Map<IList<BrandDTO>>(brands);
                 return Ok(results);
 
-            }
-            catch(Exception ex)
-            {
-                _logger.LogError(ex, $"Somthing went wrong in the {nameof(GetBrands)}");
-                return StatusCode(500, "Internal Server Error, Please try again later");
-            }
+            
         }
 
         [HttpGet("{id:int}", Name ="GetBrand")]
@@ -53,18 +47,12 @@ namespace BikeListing.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetBrand(int id)
         {
-            try
-            {
+           
                 var brand = await _unitOfWork.Brands.Get(q => q.Id==id, new List<string> {"Bikes"});
                 var results = _mapper.Map<BrandDTO>(brand);
                 return Ok(results);
 
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, $"Somthing went wrong in the {nameof(GetBrand)}");
-                return StatusCode(500, "Internal Server Error, Please try again later");
-            }
+           
         }
 
         [Authorize(Roles ="Admin")]
@@ -80,20 +68,13 @@ namespace BikeListing.Controllers
                 return BadRequest(ModelState);
             }
 
-            try
-            {
+            
                 var brand = _mapper.Map<Brand>(brandDTO);
                 await _unitOfWork.Brands.Insert(brand);
                 await _unitOfWork.Save();
 
                 return CreatedAtRoute("GetBrand", new { id = brand.Id }, brand);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, $"Somthing went wrong in the {nameof(CreateBrand)}");
-                return StatusCode(500, "Internal Server Error, Please try again later");
-            }
-
+            
         }
 
         [Authorize]
@@ -109,8 +90,7 @@ namespace BikeListing.Controllers
                 return BadRequest(ModelState);
             }
 
-            try
-            {
+          
                 var brand = await _unitOfWork.Brands.Get(q => q.Id == id);
                 if (brand == null)
                 {
@@ -123,12 +103,7 @@ namespace BikeListing.Controllers
                 await _unitOfWork.Save();
 
                 return NoContent();
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, $"Somthing went wrong in the {nameof(CreateBrand)}");
-                return StatusCode(500, "Internal Server Error, Please try again later");
-            }
+           
 
         }
 
@@ -145,8 +120,7 @@ namespace BikeListing.Controllers
                 return BadRequest();
             }
 
-            try
-            {
+           
                 var brand = await _unitOfWork.Brands.Get(q => q.Id == id);
                 if (brand == null)
                 {
@@ -159,13 +133,7 @@ namespace BikeListing.Controllers
                 await _unitOfWork.Save();
 
                 return NoContent();
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, $"Somthing went wrong in the {nameof(DeleteBrand)}");
-                return StatusCode(500, "Internal Server Error, Please try again later");
-            }
-
+            
         }
 
 
