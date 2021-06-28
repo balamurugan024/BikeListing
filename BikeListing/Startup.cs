@@ -19,6 +19,8 @@ using Swashbuckle.AspNetCore.SwaggerUI;
 using BikeListing.Configuration;
 using BikeListing.IRepository;
 using BikeListing.Repository;
+using Microsoft.AspNetCore.Identity;
+using BikeListing.Services;
 
 namespace BikeListing
 {
@@ -39,10 +41,14 @@ namespace BikeListing
                 
                 );
 
+            services.AddAuthentication();
+            services.ConfigureIdentity();
+            services.ConfigureJWT(Configuration);
+
             services.AddCors(o => {
                 o.AddPolicy("AllAccess", builder => 
                     builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()
-                 );
+                 ); 
             
             });
 
@@ -50,6 +56,7 @@ namespace BikeListing
             services.AddAutoMapper(typeof(MapperInitializer));
 
             services.AddTransient<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IAuthManager, AuthManager>();
 
             services.AddSwaggerGen(
                 c=>
@@ -82,6 +89,8 @@ namespace BikeListing
             app.UseCors("AllAccess");
 
             app.UseRouting();
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 

@@ -16,6 +16,7 @@ namespace BikeListing.Configuration
             CreateMap<Brand, CreateBrandDTO>().ReverseMap();
             CreateMap<Bike, BikeDTO>().ReverseMap();
             CreateMap<Bike, CreateBikeDTO>().ReverseMap();
+            CreateMap<ApiUser, UserDTO>().ReverseMap();
         }
 
     }
