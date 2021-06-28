@@ -99,7 +99,77 @@ namespace BikeListing.Controllers
         }
 
 
+        [Authorize]
+        [HttpPut("{id:int}")]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> UpdateBike(int id, [FromBody] UpdateBikeDTO bikeDTO)
+        {
+            if (!ModelState.IsValid || id < 1)
+            {
+                _logger.LogError($"Invalid POST Attempt in {nameof(UpdateBike)}");
+                return BadRequest(ModelState);
+            }
 
+            try
+            {
+                var bike = await _unitOfWork.Bikes.Get(q => q.Id == id);
+                if(bike ==  null)    
+                {
+                    _logger.LogError($"Invalid UPDATE attempt in {nameof(UpdateBike)}");
+                    return BadRequest("Submitted data is Invalid");
+                }
+
+                _mapper.Map(bikeDTO, bike);
+                _unitOfWork.Bikes.Update(bike);
+                await _unitOfWork.Save();
+
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Somthing went wrong in the {nameof(CreateBike)}");
+                return StatusCode(500, "Internal Server Error, Please try again later");
+            }
+
+        }
+
+        [Authorize(Roles ="Admin")]
+        [HttpDelete("{id:int}")]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> DeleteBike(int id)
+        {
+            if (id < 1)
+            {
+                _logger.LogError($"Invalid Delete Attempt in {nameof(DeleteBike)}");
+                return BadRequest();
+            }
+
+            try
+            {
+                var bike = await _unitOfWork.Bikes.Get(q => q.Id == id);
+                if (bike == null)
+                {
+                    _logger.LogError($"Invalid Delete attempt in {nameof(DeleteBike)}");
+                    return BadRequest("Submitted data is Invalid");
+                }
+
+                
+                await _unitOfWork.Bikes.Delete(id);
+                await _unitOfWork.Save();
+
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Somthing went wrong in the {nameof(DeleteBike)}");
+                return StatusCode(500, "Internal Server Error, Please try again later");
+            }
+
+        }
 
     }
 }

@@ -26,4 +26,10 @@ namespace BikeListing.Models
         [Required]
         public int BrandId { get; set; }
     }
+
+
+    public class UpdateBikeDTO : CreateBikeDTO
+    {
+
+    }
 }

@@ -6,6 +6,7 @@ using AutoMapper;
 using BikeListing.Data;
 using BikeListing.IRepository;
 using BikeListing.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -66,7 +67,7 @@ namespace BikeListing.Controllers
             }
         }
 
-
+        [Authorize(Roles ="Admin")]
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status201Created)]
@@ -90,6 +91,78 @@ namespace BikeListing.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, $"Somthing went wrong in the {nameof(CreateBrand)}");
+                return StatusCode(500, "Internal Server Error, Please try again later");
+            }
+
+        }
+
+        [Authorize]
+        [HttpPut("{id:int}")]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> UpdateBrand(int id, [FromBody] UpdateBrandDTO brandDTO)
+        {
+            if (!ModelState.IsValid || id < 1)
+            {
+                _logger.LogError($"Invalid UPDATE Attempt in {nameof(UpdateBrand)}");
+                return BadRequest(ModelState);
+            }
+
+            try
+            {
+                var brand = await _unitOfWork.Brands.Get(q => q.Id == id);
+                if (brand == null)
+                {
+                    _logger.LogError($"Invalid UPDATE attempt in {nameof(UpdateBrand)}");
+                    return BadRequest("Submitted data is Invalid");
+                }
+
+                _mapper.Map(brandDTO, brand);
+                _unitOfWork.Brands.Update(brand);
+                await _unitOfWork.Save();
+
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Somthing went wrong in the {nameof(CreateBrand)}");
+                return StatusCode(500, "Internal Server Error, Please try again later");
+            }
+
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpDelete("{id:int}")]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> DeleteBrand(int id)
+        {
+            if (id < 1)
+            {
+                _logger.LogError($"Invalid DELETE Attempt in {nameof(DeleteBrand)}");
+                return BadRequest();
+            }
+
+            try
+            {
+                var brand = await _unitOfWork.Brands.Get(q => q.Id == id);
+                if (brand == null)
+                {
+                    _logger.LogError($"Invalid DELETE attempt in {nameof(DeleteBrand)}");
+                    return BadRequest();
+                }
+
+
+                await _unitOfWork.Brands.Delete(id);
+                await _unitOfWork.Save();
+
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Somthing went wrong in the {nameof(DeleteBrand)}");
                 return StatusCode(500, "Internal Server Error, Please try again later");
             }
 

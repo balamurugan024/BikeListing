@@ -17,4 +17,10 @@ namespace BikeListing.Models
         [StringLength(maximumLength: 3, ErrorMessage = "Brand Code is too Long")]
         public string SCode { get; set; }
     }
+
+
+    public class UpdateBrandDTO: CreateBrandDTO
+    {
+
+    }
 }
