@@ -28,7 +28,7 @@ namespace BikeListing.Repository
             GC.SuppressFinalize(this);
         }
 
-        public async Task save()
+        public async Task Save()
         {
             await _context.SaveChangesAsync();
         }

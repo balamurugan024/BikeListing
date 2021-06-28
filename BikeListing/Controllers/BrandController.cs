@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using BikeListing.Data;
 using BikeListing.IRepository;
 using BikeListing.Models;
 using Microsoft.AspNetCore.Http;
@@ -46,7 +47,7 @@ namespace BikeListing.Controllers
             }
         }
 
-        [HttpGet("{id:int}")]
+        [HttpGet("{id:int}", Name ="GetBrand")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetBrand(int id)
@@ -64,6 +65,36 @@ namespace BikeListing.Controllers
                 return StatusCode(500, "Internal Server Error, Please try again later");
             }
         }
+
+
+        [HttpPost]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> CreateBrand([FromBody] CreateBrandDTO brandDTO)
+        {
+            if (!ModelState.IsValid)
+            {
+                _logger.LogError($"Invalid POST Attempt in {nameof(CreateBrand)}");
+                return BadRequest(ModelState);
+            }
+
+            try
+            {
+                var brand = _mapper.Map<Brand>(brandDTO);
+                await _unitOfWork.Brands.Insert(brand);
+                await _unitOfWork.Save();
+
+                return CreatedAtRoute("GetBrand", new { id = brand.Id }, brand);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Somthing went wrong in the {nameof(CreateBrand)}");
+                return StatusCode(500, "Internal Server Error, Please try again later");
+            }
+
+        }
+
 
     }
 }

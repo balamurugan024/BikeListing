@@ -11,6 +11,6 @@ namespace BikeListing.IRepository
        IGenericRepository<Brand> Brands { get; }
        IGenericRepository<Bike> Bikes { get; }
 
-        Task save();
+        Task Save();
     }
 }
