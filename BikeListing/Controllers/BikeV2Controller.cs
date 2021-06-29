@@ -33,7 +33,7 @@ namespace BikeListing.Controllers
 
         [HttpGet]
         [HttpCacheExpiration(CacheLocation = CacheLocation.Public,MaxAge =60)]
-        [HttpCacheValidation(MustRevalidate = false]
+        [HttpCacheValidation(MustRevalidate = false)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetBikes()
