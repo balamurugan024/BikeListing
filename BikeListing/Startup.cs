@@ -41,7 +41,7 @@ namespace BikeListing
                 
                 );
 
-            services.AddResponseCaching();
+            services.ConfigurationHttpCacheHeaders();
             services.AddAuthentication();
             services.ConfigureIdentity();
             services.ConfigureJWT(Configuration);
@@ -52,7 +52,7 @@ namespace BikeListing
                  ); 
             
             });
-
+             
 
             services.AddAutoMapper(typeof(MapperInitializer));
 
@@ -91,7 +91,10 @@ namespace BikeListing
             app.UseHttpsRedirection();
             app.UseCors("AllAccess");
 
+
+
             app.UseResponseCaching();
+            app.UseHttpCacheHeaders();
             app.UseRouting();
 
             app.UseAuthentication();

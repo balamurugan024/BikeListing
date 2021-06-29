@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using BikeListing.IRepository;
 using BikeListing.Models;
+using Marvin.Cache.Headers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -31,7 +32,8 @@ namespace BikeListing.Controllers
 
 
         [HttpGet]
-        [ResponseCache(CacheProfileName = "120SecondDuration")]
+        [HttpCacheExpiration(CacheLocation = CacheLocation.Public,MaxAge =60)]
+        [HttpCacheValidation(MustRevalidate = false]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetBikes()

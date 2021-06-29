@@ -1,6 +1,7 @@
 ﻿
 using BikeListing.Data;
 using BikeListing.Models;
+using Marvin.Cache.Headers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
@@ -95,6 +96,28 @@ namespace BikeListing
             
             });
         }
+
+        public static void ConfigurationHttpCacheHeaders(this IServiceCollection services)
+        {
+            services.AddResponseCaching();
+            services.AddHttpCacheHeaders(
+                expirationOpt =>
+                {
+                    expirationOpt.MaxAge = 120;
+                    expirationOpt.CacheLocation = CacheLocation.Private;
+                },
+                validationOpt =>
+                {
+                    validationOpt.MustRevalidate = true;
+                   
+                }
+                
+                
+                );
+        }
+
+
+
 
     }
 }
