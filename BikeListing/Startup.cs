@@ -21,6 +21,7 @@ using BikeListing.IRepository;
 using BikeListing.Repository;
 using Microsoft.AspNetCore.Identity;
 using BikeListing.Services;
+using AspNetCoreRateLimit;
 
 namespace BikeListing
 {
@@ -40,6 +41,11 @@ namespace BikeListing
                 options.UseSqlServer(Configuration.GetConnectionString("sqlconnection"))
                 
                 );
+
+
+            //services.AddMemoryCache();
+            //services.ConfigureRateLimiting();
+            //services.AddHttpContextAccessor();
 
             services.ConfigurationHttpCacheHeaders();
             services.AddAuthentication();
@@ -95,6 +101,8 @@ namespace BikeListing
 
             app.UseResponseCaching();
             app.UseHttpCacheHeaders();
+            //app.UseIpRateLimiting();
+
             app.UseRouting();
 
             app.UseAuthentication();

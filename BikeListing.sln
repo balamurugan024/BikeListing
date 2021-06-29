@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30523.141
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BikeListing", "BikeListing\BikeListing.csproj", "{46DBD592-CA68-40CB-AA5F-E872DF73963D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BikeListing", "BikeListing\BikeListing.csproj", "{46DBD592-CA68-40CB-AA5F-E872DF73963D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BikeListing.Test", "BikeListing.Test\BikeListing.Test.csproj", "{99A54DDF-02DF-41AF-B2F0-0E86CC2CC5FB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{46DBD592-CA68-40CB-AA5F-E872DF73963D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{46DBD592-CA68-40CB-AA5F-E872DF73963D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{46DBD592-CA68-40CB-AA5F-E872DF73963D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{99A54DDF-02DF-41AF-B2F0-0E86CC2CC5FB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{99A54DDF-02DF-41AF-B2F0-0E86CC2CC5FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{99A54DDF-02DF-41AF-B2F0-0E86CC2CC5FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{99A54DDF-02DF-41AF-B2F0-0E86CC2CC5FB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

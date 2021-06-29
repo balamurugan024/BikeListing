@@ -1,4 +1,5 @@
 ﻿
+using AspNetCoreRateLimit;
 using BikeListing.Data;
 using BikeListing.Models;
 using Marvin.Cache.Headers;
@@ -116,6 +117,29 @@ namespace BikeListing
                 );
         }
 
+        //public static void ConfigureRateLimiting(this IServiceCollection services)
+        //{
+        //    var rateLimitRules = new List<RateLimitRule>
+        //    {
+        //        new RateLimitRule
+        //        {
+        //            Endpoint = "*",
+        //            Limit = 2,
+        //            Period = "5s"
+        //        }
+
+        //    };
+
+        //    services.Configure<IpRateLimitOptions>(opt =>
+        //    {
+        //        opt.GeneralRules = rateLimitRules;
+
+        //    });
+
+        //    services.AddSingleton<IRateLimitCounterStore, MemoryCacheRateLimitCounterStore>();
+        //    services.AddSingleton<IIpPolicyStore, MemoryCacheIpPolicyStore>();
+        //    services.AddSingleton<IRateLimitConfiguration, RateLimitConfiguration>();
+        //}
 
 
 
