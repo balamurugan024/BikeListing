@@ -41,6 +41,7 @@ namespace BikeListing
                 
                 );
 
+            services.AddResponseCaching();
             services.AddAuthentication();
             services.ConfigureIdentity();
             services.ConfigureJWT(Configuration);
@@ -65,7 +66,9 @@ namespace BikeListing
                 }
                 );
 
-            services.AddControllers().AddNewtonsoftJson(op =>
+            services.AddControllers( configure =>{
+                configure.CacheProfiles.Add("120SecondDuration", new CacheProfile { Duration = 120 });
+            }).AddNewtonsoftJson(op =>
             op.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
             );
 
@@ -88,6 +91,7 @@ namespace BikeListing
             app.UseHttpsRedirection();
             app.UseCors("AllAccess");
 
+            app.UseResponseCaching();
             app.UseRouting();
 
             app.UseAuthentication();

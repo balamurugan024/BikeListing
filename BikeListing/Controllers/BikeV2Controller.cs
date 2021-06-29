@@ -28,7 +28,10 @@ namespace BikeListing.Controllers
             _mapper = mapper;
         }
 
+
+
         [HttpGet]
+        [ResponseCache(CacheProfileName = "120SecondDuration")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetBikes()

@@ -18,7 +18,7 @@
       }
     },
     "BikeListing": {
-      "commandName": "Project",
+      "commandName": "IISExpress",
       "launchBrowser": true,
       "launchUrl": "weatherforecast",
       "environmentVariables": {
